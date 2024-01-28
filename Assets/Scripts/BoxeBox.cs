@@ -11,6 +11,9 @@ public class BoxeBox : MonoBehaviour
     private Vector3 posicaoOriginal;
     private bool movendoParaDestino = false;
     private bool movendoParaOrigem = false;
+    public GameObject tampa;
+    public bool ativado = false;
+    public Rigidbody rb;
 
 
     void Start()
@@ -32,16 +35,17 @@ public class BoxeBox : MonoBehaviour
 
         if (!movendoParaDestino)
         {
-            if (Input.GetKeyDown(KeyCode.P))
+            if (ativado)
             {
                 movendoParaDestino = true;
+                tampa.SetActive(false);
             }
         }
         else
         {
             // Mover para o destino
             transform.position = Vector3.MoveTowards(transform.position, destino.position, velocidade * Time.deltaTime);
-
+            //rb.AddForce(destino.position * velocidade, ForceMode.Impulse);
             // Verificar se o objeto alcançou o destino
             if (transform.position == destino.position)
             {
@@ -53,6 +57,7 @@ public class BoxeBox : MonoBehaviour
                     // Inverter a direção (mover de ré)
                     movendoParaDestino = false;
                     movendoParaOrigem = true;
+                    ativado = false;
                     timer = tempoEspera; // Reiniciar o tempo de espera
                 }
             }
